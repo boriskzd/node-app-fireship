@@ -70,3 +70,35 @@ function main() {
 }
 
 main();
+
+/*
+    FILE SYSTEM
+*/
+
+// 2 types of file reading
+const { readFile, readFileSync } = require("fs");
+
+// readFileSync BLOCKS execution of following code ("do this ASAP 1"), until file is read. ( if file is huge, it might take a while )
+// this code first logs TXT then ASAP 1.
+const txt = readFileSync("./hello.txt", "utf8");
+console.log(txt);
+console.log("do this ASAP 1"); // won't run until TXT file is read.
+
+// readFile DOESN'T BLOCK execution of following code (do this ASAP 2).
+// callback function is the third argument, where we console.log(txt)
+// this code first logs ASAP 2, then TXT
+readFile("./hello.txt", "utf8", (err, txt) => {
+	console.log(txt);
+});
+console.log("do this ASAP 2");
+
+// PROMISES - are async and non-blocking
+// const { readFile: readFilePromises } ---> save function readFile as readFilePromises, because we declared readFile above.
+const { readFile: readFilePromises } = require("fs").promises; //
+
+async function hello() {
+	const file = await readFilePromises("./hello.txt", "utf8"); // readFile() --> is a function that returns promise when called
+	console.log(file);
+}
+hello();
+console.log("do this ASAP 3");

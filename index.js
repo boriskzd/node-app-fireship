@@ -71,6 +71,8 @@ function main() {
 
 main();
 
+// TODO: Refactor file system like above, put it in main() func.
+
 /*
     FILE SYSTEM
 */
@@ -102,3 +104,12 @@ async function hello() {
 }
 hello();
 console.log("do this ASAP 3");
+
+/*
+    MODULES & NPM
+*/
+
+// Module is a JS file that exports its code
+const myModule = require("./my-module");
+
+console.log(myModule);

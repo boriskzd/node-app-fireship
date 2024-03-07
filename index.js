@@ -3,6 +3,8 @@
     to run this script, type: "node index.js" in terminal
     running "node ."  in same directory has same effect, because Node.js looks for an entry point file named index.js
 
+	npm init -y 
+	creates package.json file
 */
 
 /*

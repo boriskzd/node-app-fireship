@@ -116,7 +116,7 @@ function readFileExample() {
     MODULES & NPM
 */
 
-function customModules() {
+function importCustomModules() {
 	// This function demonstrates how to import and use custom modules in Node.js
 	// Module is a JS file that exports its code
 	// check file called my-module.js in current folder to see how custom module looks like
@@ -139,9 +139,44 @@ function main() {
 	// demonstrateProcess();
 	// createAndEmitCustomEvent();
 	// readFileExample();
-	// customModules();
+	// importCustomModules();
 }
 main();
 
 const express = require("express");
 const app = express();
+
+// GET request: requesting some data on the server, without modifying anything on the server
+app.get("/", (request, response) => {
+	// REQUEST - users incoming data
+	// RESPONSE - your outgoing data
+	// in REQUEST -> look for 'headers' or 'body' of request to authenticate a user or understand what the user is trying to do
+
+	readFile("./home.html", "utf8", (err, html) => {
+		if (error) {
+			response.status(500).send("sorry, out of order");
+		}
+
+		response.send(html);
+	});
+});
+
+// callbacks can be very diffficult to work with, especially as your app grows in complexity
+// it often leads to callback hell, where you have bunch of callbacks nested within callbacks within more callbacks
+// to avoid that, use PROMISES instead of callbacks
+
+// instead of importing readFile from 'fs', it is imported from 'fs'.promises
+const { readFile } = require("fs").promises;
+
+// make callback function async AND...
+app.get("/", async (request, response) => {
+	// ... AND await operation to read file
+	// especially useful when you have multiple async operations to handle in a single request
+	response.send(await readFile("./home.html", "utf8"));
+});
+
+// tells express app to start listening to incoming requests
+// PORT usually comes from node enviroment
+app.listen(process.env.PORT || 3000, () =>
+	console.log(`App available on http://localhost:3000`)
+);

@@ -147,13 +147,15 @@ const express = require("express");
 const app = express();
 
 // GET request: requesting some data on the server, without modifying anything on the server
-app.get("/", (request, response) => {
+app.get("/old/", (request, response) => {
 	// REQUEST - users incoming data
 	// RESPONSE - your outgoing data
 	// in REQUEST -> look for 'headers' or 'body' of request to authenticate a user or understand what the user is trying to do
 
+	const { readFile } = require("fs");
+
 	readFile("./home.html", "utf8", (err, html) => {
-		if (error) {
+		if (err) {
 			response.status(500).send("sorry, out of order");
 		}
 
@@ -166,13 +168,13 @@ app.get("/", (request, response) => {
 // to avoid that, use PROMISES instead of callbacks
 
 // instead of importing readFile from 'fs', it is imported from 'fs'.promises
-const { readFile } = require("fs").promises;
+const { readFile: readFilePromises2 } = require("fs").promises;
 
 // make callback function async AND...
 app.get("/", async (request, response) => {
 	// ... AND await operation to read file
 	// especially useful when you have multiple async operations to handle in a single request
-	response.send(await readFile("./home.html", "utf8"));
+	response.send(await readFilePromises2("./home.html", "utf8"));
 });
 
 // tells express app to start listening to incoming requests

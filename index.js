@@ -5,6 +5,7 @@
 
 	npm init -y 
 	creates package.json file
+
 */
 
 /*
@@ -13,8 +14,8 @@
 
 // Basic functions of Node.js runtime, like "global" and "process"
 
-// prints "Hello world!" to the terminal in VS Code
 function printHelloWorld() {
+	// prints "Hello world!" to the terminal in VS Code
 	console.log("Hello world!");
 }
 
@@ -28,6 +29,8 @@ function demonstrateGlobals() {
 }
 
 function demonstrateProcess() {
+	// The process object provides information about, and control over, the current Node.js process.
+	// It allows interaction with the enviroment in which the Node.js script is running.
 	console.log(process.platform); // prints win32
 	console.log(process.env.USERNAME); // prints current Windows users username ( Marc, Luke, Peter, or whatever users username is ). for Linux, use process.env.USER
 }
@@ -63,49 +66,70 @@ function createAndEmitCustomEvent() {
 	eventEmitter.emit("lunch");
 }
 
-// Main function that executes all functionalities
-function main() {
-	printHelloWorld();
-	demonstrateGlobals();
-	demonstrateProcess();
-	createAndEmitCustomEvent();
-}
-
-main();
-
-// TODO: Refactor file system like above, put it in main() func.
-
 /*
     FILE SYSTEM
 */
 
-// 2 types of file reading
-const { readFile, readFileSync } = require("fs");
+// TODO: Clean up this code and comments
 
-// readFileSync BLOCKS execution of following code ("do this ASAP 1"), until file is read. ( if file is huge, it might take a while )
-// this code first logs TXT then ASAP 1.
-const txt = readFileSync("./hello.txt", "utf8");
-console.log(txt);
-console.log("do this ASAP 1"); // won't run until TXT file is read.
+// Demonstration of various methods of reading files in Node.js
+function readFileExample() {
+	/*
+		IMPORTANT: Imports ( 'require' ) should be done outside functions, but it is inside this function so we know what part
+		of code is used wit which functionality.
+		With ES6 'import', they should always be done on top level of the file!
+	*/
 
-// readFile DOESN'T BLOCK execution of following code (do this ASAP 2).
-// callback function is the third argument, where we console.log(txt)
-// this code first logs ASAP 2, then TXT
-readFile("./hello.txt", "utf8", (err, txt) => {
+	// 2 types of file reading
+	const { readFile, readFileSync } = require("fs");
+	// readFile() --> is a function that returns promise when called. In next example we import promises from that function.
+	// const { readFile: readFilePromises } ---> save function readFile as readFilePromises, because we declared readFile above.
+	const { readFile: readFilePromises } = require("fs").promises;
+
+	// ! Synchronous file read operation !
+	// readFileSync BLOCKS execution of following code ("do this ASAP 1"), until file is read. ( if file is huge, it might take a while )
+	// this code first logs TXT then ASAP 1.
+	const txt = readFileSync("./hello.txt", "utf8");
 	console.log(txt);
-});
-console.log("do this ASAP 2");
+	console.log("do this ASAP 1"); // won't run until TXT file is read.
 
-// PROMISES - are async and non-blocking
-// const { readFile: readFilePromises } ---> save function readFile as readFilePromises, because we declared readFile above.
-const { readFile: readFilePromises } = require("fs").promises; //
+	// ! Asynchronous file read operation using callbacks !
+	// readFile DOESN'T BLOCK execution of following code (do this ASAP 2).
+	// callback function is the third argument, where we console.log(txt)
+	// this code first logs ASAP 2, then TXT
+	readFile("./hello.txt", "utf8", (err, txt) => {
+		console.log(txt);
+	});
+	console.log("do this ASAP 2");
 
-async function hello() {
-	const file = await readFilePromises("./hello.txt", "utf8"); // readFile() --> is a function that returns promise when called
-	console.log(file);
+	// ! Asynchronous file read operation using Promises !
+	// PROMISES - are async and non-blocking.
+	// function readFilePromises was imported by: require("fs").promises
+	async function hello() {
+		const file = await readFilePromises("./hello.txt", "utf8");
+		console.log(file);
+	}
+	hello();
+	console.log("do this ASAP 3");
 }
-hello();
-console.log("do this ASAP 3");
+
+/*
+	________________________________________________
+	Main function that executes all functionalities.
+	________________________________________________
+
+*/
+
+// ------ UNCOMMENT FUNCTIONS TO RUN THEM !!! ------
+
+function main() {
+	// printHelloWorld();
+	// demonstrateGlobals();
+	// demonstrateProcess();
+	// createAndEmitCustomEvent();
+	// readFileExample();
+}
+main();
 
 /*
     MODULES & NPM
@@ -115,3 +139,5 @@ console.log("do this ASAP 3");
 const myModule = require("./my-module");
 
 console.log(myModule);
+
+const express = require("express");

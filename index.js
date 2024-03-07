@@ -71,7 +71,6 @@ function createAndEmitCustomEvent() {
 */
 
 // TODO: Clean up this code and comments
-
 // Demonstration of various methods of reading files in Node.js
 function readFileExample() {
 	/*
@@ -114,6 +113,18 @@ function readFileExample() {
 }
 
 /*
+    MODULES & NPM
+*/
+
+function customModules() {
+	// This function demonstrates how to import and use custom modules in Node.js
+	// Module is a JS file that exports its code
+	// check file called my-module.js in current folder to see how custom module looks like
+	const myModule = require("./my-module");
+	console.log(myModule);
+}
+
+/*
 	________________________________________________
 	Main function that executes all functionalities.
 	________________________________________________
@@ -128,16 +139,9 @@ function main() {
 	// demonstrateProcess();
 	// createAndEmitCustomEvent();
 	// readFileExample();
+	// customModules();
 }
 main();
 
-/*
-    MODULES & NPM
-*/
-
-// Module is a JS file that exports its code
-const myModule = require("./my-module");
-
-console.log(myModule);
-
 const express = require("express");
+const app = express();
